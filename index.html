@@ -24,9 +24,7 @@
         crossorigin="anonymous"></script>
     <!-- 이미지 클래스 -->
     <style>
-        .wrap {
-            text-align: center;
-        }
+        .wrap {}
 
         .main {
             padding: 0px 0px 0px 20px;
@@ -37,7 +35,6 @@
             align-items: left;
             justify-content: center;
         }
-
 
         .order {
             width: 500px;
@@ -55,6 +52,33 @@
             font-size: 30px;
         }
     </style>
+
+    <script>
+        function order() {
+            let taeinname = $('#orderName').val();
+            let taeincount = $('#orderCount').val();
+            let taeinadress = $('#orderAdress').val();
+            let taeinnumber = $('#orderNumber').val();
+
+            if (taeinname == '') {
+                alert('이름을 입력하세요');
+                $('#orderName').focus();
+                return;
+            } else if (taeincount == '') {
+                alert('수량을 입력하세요');
+                $('#orderCount').focus();
+            } else if (taeinadress == '') {
+                alert('주소를 입력하세요');
+                $('#orderAdress').focus();
+                return;
+            } else if (taeinnumber == '') {
+                alert('전화번호를 입력하세요');
+                $('#orderNumber').focus();
+                return;
+            } alert('주문이 완료되었습니다');
+        }
+    </script>
+
 </head>
 
 <body>
@@ -73,15 +97,15 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">주문자 이름</span>
             </div>
-            <input type="text" class="form-control" aria-label="Sizing example input"
+            <input id="orderName" type="text" class="form-control" aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-sm">
         </div>
         <div class="input-group mb-3 order">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="inputGroupSelect01">수량</label>
             </div>
-            <select class="custom-select" id="inputGroupSelect01">
-                <option selected>-- 바보가 된 순간을 카운트하세요 --</option>
+            <select class="custom-select" id="orderCount">
+                <option selected value>-- 바보가 된 순간을 카운트하세요 --</option>
                 <option value="1">한번</option>
                 <option value="2">두번</option>
                 <option value="3">그만...</option>
@@ -91,18 +115,18 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">주소</span>
             </div>
-            <input type="text" class="form-control" aria-label="Sizing example input"
+            <input id="orderAdress" type="text" class="form-control" aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-sm">
         </div>
         <div class="input-group input-group-sm mb-3 order">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">전화번호</span>
             </div>
-            <input type="text" class="form-control" aria-label="Sizing example input"
+            <input id="orderNumber" type="text" class="form-control" aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-sm">
         </div>
     </div>
-    <button type="button" class="btn btn-primary button1">억지로 주문하기</button>
+    <button onclick="order()" type="button" class="btn btn-primary button1">억지로 주문하기</button>
 </body>
 
 </html>
