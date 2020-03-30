@@ -12,14 +12,9 @@ soup = BeautifulSoup(data.text, 'html.parser')
 music_info = soup.select('#body-content > div.newest-list > div > table > tbody > tr')
 for music in music_info:
     title = music.select('td.info > a.title.ellipsis')
-    if len(title) > 0:
-        print(title[0].text.strip())
     number = music.select('td.number')
-    if len(number) > 0:
-        print(number[0].text.strip())
     artists = music.select('td.info > a.artist.ellipsis')
-    if len(artists) > 0:
-        print(artists[0].text.strip())
+    print(title[0].text.strip(), number[0].text.strip(), artists[0].text.strip())
 #############################
 # (입맛에 맞게 코딩)
 #############################
