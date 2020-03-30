@@ -10,11 +10,13 @@ data = requests.get('https://www.genie.co.kr/chart/top200?ditc=D&rtm=N&ymd=20200
 # 이제 코딩을 통해 필요한 부분을 추출하면 된다.
 soup = BeautifulSoup(data.text, 'html.parser')
 music_info = soup.select('#body-content > div.newest-list > div > table > tbody > tr')
+rank = 1
 for music in music_info:
     title = music.select('td.info > a.title.ellipsis')
-    number = music.select('td.number')
+    # number = music.select('td.number')
     artists = music.select('td.info > a.artist.ellipsis')
-    print(title[0].text.strip(), number[0].text.strip(), artists[0].text.strip())
+    print(rank, title[0].text.strip(), artists[0].text.strip())
+    rank += 1
 #############################
 # (입맛에 맞게 코딩)
 #############################
