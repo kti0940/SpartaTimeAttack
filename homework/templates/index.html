@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <!-- Webpage Title -->
+    <title>태인 마켓</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <!-- 이미지 클래스 -->
+
+    <script>
+        function orderbutton() {
+            // 1. 제목, 저자, 리뷰 내용을 가져옵니다.
+            let orderName_give = $(orderName).val();
+            let orderCount_give = $(orderCount).val();
+            let orderAdress_give = $(orderAdress).val();
+            let orderNumber_give = $(orderNumber).val();
+            // 2. 제목, 저자, 리뷰 중 하나라도 입력하지 않았을 경우 alert를 띄웁니다.
+            if (orderName_give == '') {
+                alert('이름을 입력하세요');
+                $('#orderName').focus();
+                return;
+            } else if (orderCount_give == '') {
+                alert('수량을 입력하세요');
+                $('#orderCount').focus();
+            } else if (orderAdress_give == '') {
+                alert('주소를 입력하세요');
+                $('#orderAdress').focus();
+                return;
+            } else if (orderNumber_give == '') {
+                alert('전화번호를 입력하세요');
+                $('#orderNumber').focus();
+                return;
+            }
+
+            let data_give = {
+                'orderName_give': orderName_give,
+                'orderCount_give': orderCount_give,
+                'orderAdress_give': orderAdress_give,
+                'orderNumber_give': orderNumber_give
+            }
+
+            // 3. POST /orders 에 저장을 요청합니다.
+            $.ajax({
+                type: 'POST', // 타입을 작성합니다.
+                url: '/orders', // url을 작성합니다.
+                data: data_give, // data를 작성합니다. },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            // 1. 리뷰 목록을 서버에 요청하기
+            // 2. 요청 성공 여부 확인하기
+            // 3. 요청 성공했을 때 리뷰를 올바르게 화면에 나타내기
+            $.ajax({
+                type: "GET",
+                url: "/orders",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let orders = response['orders'];
+
+                        for (let i = 0; i < orders.length; i++) {
+                            let orders = orders[i];
+                            make_card(orders[i]['orderName'], orders[i]['orderCount'], orders[i]['orderAdress'], orders[i]['orderNumber'])
+                            // 2. 성공했을 때 리뷰를 올바르게 화면에 나타내기
+                        } else {
+                        alert('주문을 받아오지 못했습니다');
+                    }
+                }
+            });
+        }
+
+        function make_order(orderName, orderCount, orderAdress, orderNumber) {
+            let temp_html = '<tr>\
+                                <td>'+ orderName + '</td>\
+                                <td>'+ orderCount + '</td>\
+                                <td>'+ orderAdress + '</td>\
+                                <td>'+ orderNumber + '</td>\
+                            </tr>';
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+    <style>
+        .wrap {}
+
+        .main {
+            padding: 0px 0px 0px 20px;
+            color: black;
+            /* display flex를 쓸 때엔 아래 네 줄이 항상 묶여 다닙니다. */
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            justify-content: center;
+        }
+
+        .order {
+            width: 500px;
+        }
+
+        .button1 {
+            margin: 0px 0px 0px 20px;
+        }
+
+        .display {
+            display: inline-block;
+        }
+
+        .fontcss {
+            font-size: 30px;
+        }
+
+        .orders {
+            margin-top: 50px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="wrap">
+        <div>
+            <img src="{{ url_for('static', filename='babo.jpeg') }}">
+        </div>
+    </div>
+    <div class="main">
+        <span class="display"><span class="fontcss">상품명 : 어!?</span> 가격: 멍때리는 순간 얻게됨</span>
+        <!-- (가격부분 제목옆으로 어떻게 보내지?...왜 옆으로안가고 아래로 가질까?) -->
+        <p></p>
+        <p>이 상품으로 말할것 같으면 코딩을 할때마다 이해가 가지 않는 이모티콘으로 누적시 <span style="color:red">바보</span>가 될 수 있음</p>
+        <h2>주문하기</h2>
+        <div class="input-group input-group-sm mb-3 order">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">주문자 이름</span>
+            </div>
+            <input id="orderName" type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm">
+        </div>
+        <div class="input-group mb-3 order">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">수량</label>
+            </div>
+            <select class="custom-select" id="orderCount">
+                <option selected value>-- 바보가 된 순간을 카운트하세요 --</option>
+                <option value="1">한번</option>
+                <option value="2">두번</option>
+                <option value="3">그만...</option>
+            </select>
+        </div>
+        <div class="input-group input-group-sm mb-3 order">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">주소</span>
+            </div>
+            <input id="orderAdress" type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm">
+        </div>
+        <div class="input-group input-group-sm mb-3 order">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">전화번호</span>
+            </div>
+            <input id="orderNumber" type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm">
+        </div>
+    </div>
+
+    <button onclick="orderbutton()" type="button" class="btn btn-primary button1">억지로 주문하기</button>
+
+    <div class="orders">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">이름</th>
+                    <th scope="col">수량</th>
+                    <th scope="col">주소</th>
+                    <th scope="col">전화번호</th>
+                </tr>
+            </thead>
+            <tbody id="orders-box">
+                <tr>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+</body>
+
+</html>
