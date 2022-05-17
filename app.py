@@ -1,5 +1,7 @@
+from dataclasses import dataclass
 import json
 import hashlib
+import jwt
 
 from flask import Flask, jsonify, request  # 플라스크 서버 사용 필요한 기능들 임포트
 from flask_cors import CORS
@@ -21,18 +23,63 @@ def hello_world():  # hello_world 로 함수 지정
 def sign_up():
     data = json.loads(request.data)
 
-    pw_hash = hashlib.sha256(data.get('password').encode('utf-8')).hexdigest()
+    email = data.get('email')
+    password = data.get('password')
+
+    print(email, password)
+
+    pw_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
 
     doc = {
-        'email': data.get('email'),
+        'email': email,
         'password': pw_hash
     }
 
-    print(doc)
     db.turtleuser.insert_one(doc)
     print(doc)
 
     return jsonify({'status': 'success'})
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    print(request)
+    data = json.loads(request.data)
+    print(data)
+
+    return jsonify({'status': 'success'})
+
+    email = data.get("email")
+    password = data.get("password")
+    pw_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    print(pw_hash)
+
+    result = db.users.find_one({
+        'email': email,
+        'password': pw_hash
+    })
+
+    print(result)
+
+    if result is None:
+        return jsonify({"message": "아이디나 비밀번호가 올바르지 않습니다"}), 401
+
+    payload = {
+        'id': str(result["_id"]),
+        'exp': datetime.utcnow() + timedelta(second=60 * 60 * 24)
+    }
+    token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+    print(token)
+
+    return jsonify({"message": "success", "token": token})
+
+
+@app.route("/getuserinfo", methods=["GET"])
+def get_user_info():
+    token = request.headers.get("Autorization")
+    print(token)
+
+    return jsonify({"message": "success"})
 
 
 if __name__ == '__main__':
