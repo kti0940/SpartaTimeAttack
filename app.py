@@ -77,20 +77,16 @@ def sign_up():
 
 @app.route("/login", methods=["POST"])
 def login():
-    print(request)
     data = json.loads(request.data)
-    print(data)
 
     email = data.get("email")
     password = data.get("password")
     hashed_pw = hashlib.sha256(password.encode('utf-8')).hexdigest()
-    print(hashed_pw)
 
     result = db.users.find_one({
         'email': email,
         'password': hashed_pw
     })
-    print(result)
 
     if result is None:
         return jsonify({"message": "아이디나 비밀번호가 옳지 않습니다."}), 401
@@ -100,7 +96,6 @@ def login():
         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
     }
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-    print(token)
 
     return jsonify({"message": "success", "token": token})
 
@@ -148,6 +143,14 @@ def get_article():
         article['_id'] = str(article['_id'])
 
     return jsonify({"message": "success", "articles": articles})
+
+
+@app.route("/article/<article_id>", methods=["GET"])
+def get_article_detail(article_id):
+
+    print(article_id)
+
+    return jsonify({"message": "success", "article_id": article_id})
 
 
 if __name__ == '__main__':
