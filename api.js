@@ -106,7 +106,10 @@ async function getArticles(){
     return response_json.articles
 }
 
-
+function logout(){
+    localStorage.removeItem("token")
+    window.location.replace(`${frontend_base_url}/`);
+}
 
 
 
