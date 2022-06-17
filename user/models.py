@@ -62,6 +62,16 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self): 
         return self.is_admin
+
+
+# related_name을 설정하지 않았을 경우 : 기본적으로 테이블 뒤에 _set이 붙음
+# 취미 : 운동
+class Hobby(models.Model):
+    name = models.CharField("취미 이름", max_length=20)
+    
+    def __str__(self):
+        return self.name
+    
     
 # 유저 상세정보
 class UserProfile(models.Model):
@@ -69,7 +79,7 @@ class UserProfile(models.Model):
     instrodution = models.TextField("자기소개")
     birthday = models.DateField("생일")
     age = models.IntegerField("나이")
-    hobby = models.CharField("취미", max_length=50)
+    hobby = models.ManyToManyField(Hobby, verbose_name="취미")
     
     def __str__(self):
         return f"{self.user.username} 님의 프로필 입니다."

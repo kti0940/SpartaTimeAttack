@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework.response import Response
 from blog.models import Article as ArticleModel
+from blog.models import Comment as CommentModel
 
 
 class ArticleView(APIView):
@@ -22,6 +23,24 @@ class ArticleView(APIView):
 
         for article in articles:
             titles.append(article.title)
-
+        
         return Response({"article_list": titles})
     
+class CommentView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        user = request.user
+        print(user)
+        
+        comments = CommentModel.objects.filter(user=user)
+        print(f'코멘트는 -> {comments}')
+        
+        contents = []
+        
+        for comment in comments:
+            contents.append(comment.contents)
+            
+        print(contents)
+
+        return Response({"comment_list": contents})
