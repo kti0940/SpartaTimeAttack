@@ -19,7 +19,7 @@ class Article(models.Model):
     title = models.CharField(max_length=50)
     category = models.ManyToManyField(Category)
     content = models.TextField()
-    datetime = models.DateField(auto_now_add=True)
+    datetime = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f'({self.title}) 라는 제목으로 {self.user.username} 님이 작성하신 글입니다'
     

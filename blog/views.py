@@ -6,11 +6,14 @@ from user.models import User as UserModel
 from blog.models import Article as ArticleModel, Category
 from blog.models import Comment as CommentModel
 from user.serializers import ArticleSerializer
+from DRF.permissions import RegistedMoreThanAMinuteUser
+
 
 
 class ArticleView(APIView):
     # 로그인 한 사용자의 게시글 목록 return
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [RegistedMoreThanAMinuteUser]
 
     def get(self, request):
         user = request.user

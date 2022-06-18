@@ -10,12 +10,15 @@ from user.models import UserProfile
 
 from user.serializers import UserSerializer
 
+from DRF.permissions import RegistedMoreThanAMinuteUser
+
 # Create your views here.
 
 class UserView(APIView):
     # permission_classes = [permissions.AllowAny] # 모든 사용자 사용 가능
-    permission_classes = [permissions.IsAuthenticated] # 인증된 사용자만 사용 가능
+    # permission_classes = [permissions.IsAuthenticated] # 인증된 사용자만 사용 가능
     # permission_classes = [permissions.IsAdminUser] #어드민 유저만 사용 가능
+    permission_classes = [RegistedMoreThanAMinuteUser]
 
     def get(self, request):
         user = request.user
