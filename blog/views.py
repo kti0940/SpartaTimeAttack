@@ -2,8 +2,10 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework.response import Response
-from blog.models import Article as ArticleModel
+from user.models import User as UserModel
+from blog.models import Article as ArticleModel, Category
 from blog.models import Comment as CommentModel
+from user.serializers import ArticleSerializer
 
 
 class ArticleView(APIView):
@@ -25,6 +27,34 @@ class ArticleView(APIView):
             titles.append(article.title)
         
         return Response({"article_list": titles})
+        
+        # article_data = ArticleSerializer(ArticleModel.objects.filter(user=request.user), many=True).data
+        # print(article_data)
+        
+        # return Response({})
+        
+    def post(self, request):
+    
+        title = request.data.get('title')
+        content = request.data.get('content')
+        category = request.data.get('category')
+        
+        user = UserModel.objects.get(username = request.user.username)
+        # print(f'오브젝트 겟 ->{user}')
+        
+        if len(title) < 5:
+            return Response({"message":"제목은 5자 이상이어야 합니다."})
+        elif len(content) < 20:
+            return Response({"message":"콘텐츠는 20자 이상이어야 합니다"})
+        elif category == '' or None:
+            return Response({"message":"카테고리를 선택해 주세요"})
+        
+        category = Category.objects.get(name=request.data.get('category'))
+        article = ArticleModel(title=title, content=content, user=user)
+        article.save()
+        article.category.add(category)
+        
+        return Response({"message":"게시글이 작성 되었습니다"})
     
 class CommentView(APIView):
     permission_classes = [permissions.IsAuthenticated]

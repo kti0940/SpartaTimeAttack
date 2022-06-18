@@ -19,6 +19,7 @@ class UserView(APIView):
 
     def get(self, request):
         user = request.user
+    
         return Response(UserSerializer(user).data)
         
         # hobbys = user.userprofile.hobby.all()

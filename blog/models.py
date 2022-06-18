@@ -21,7 +21,7 @@ class Article(models.Model):
     content = models.TextField()
     datetime = models.DateField(auto_now_add=True)
     def __str__(self):
-        return f'{self.title} {self.user.username} 님이 작성하신 글입니다'
+        return f'({self.title}) 라는 제목으로 {self.user.username} 님이 작성하신 글입니다'
     
 class Comment(models.Model):
     user = models.ForeignKey(User, verbose_name="작성자", on_delete=models.CASCADE)
