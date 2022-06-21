@@ -8,7 +8,7 @@ from django.contrib.auth import login, logout, authenticate
 
 from user.models import UserProfile
 
-from user.serializers import UserSerializer
+from user.serializers import UserSerializer, UserSignupSerializer
 
 # from DRF.permissions import RegistedMoreThanAMinuteUser
 
@@ -21,9 +21,9 @@ class UserView(APIView):
     # permission_classes = [RegistedMoreThanAMinuteUser]
 
     def get(self, request):
-        user = request.user
+        # user = request.user
         # print(dir(user))
-        return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+        return Response(UserSerializer(request.user).data, status=status.HTTP_200_OK)
         
         # hobbys = user.userprofile.hobby.all()
         # print(hobbys)
@@ -38,7 +38,7 @@ class UserView(APIView):
         #     print(hobby_members)
         #     hobby_members = list(hobby_members)
         #     print(f"hobby : {hobby.name} / hobby members : {hobby_members}")
-        return Response({})
+        # return Response({})
         
         # print(dir(user))
         
@@ -56,7 +56,13 @@ class UserView(APIView):
     
     # 회원 가입
     def post(self, request):
-        return Response({"message": "post method!!"})
+        serializer = UserSignupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message":"가입 완료!!"})
+        else:
+            print(serializer.errors)
+            return Response({"message": "가입 실패!!"})
     
     # 회원 정보 수정
     def put(self, request):

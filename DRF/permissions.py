@@ -1,5 +1,5 @@
 from rest_framework.permissions import BasePermission
-from datetime import datetime, timedelta
+from datetime import timedelta, datetime
 from django.utils import timezone
 from rest_framework.exceptions import APIException
 from rest_framework import status
@@ -26,26 +26,25 @@ class IsAdminOrIsAuthenticatedReadOnly(BasePermission):
                 }
             raise GenericAPIException(status_code=status.HTTP_401_UNAUTHORIZED, detail=response)
 
-        if user.is_authenticated and user.is_admin:
-            return True
+        # 로그인 사용자가 get 요청 시 True
             
         if user.is_authenticated and request.method in self.SAFE_METHODS:
             return True
         
-        if user.is_authenticated and request.user.join_date < (timezone.now() - timedelta(days=7)):
+        # admin 사용자이거나 가입일이 7일 이상 된 사용자의 경우 True
+        if user.is_authenticated and user.is_admin or \
+            user.join_date < (datetime.now().date() - timedelta(days=7)):
             return True
         
-        return False       
+        return False
 
-# class RegistedMoreThanAMinuteUser(BasePermission):
-    # """
-    # Allows access only to authenticated users.
-    # """
+class RegistedMoreThanAMinuteUser(BasePermission):
+    """
+    Allows access only to authenticated users.
+    """
+    message = '가입 후 3분이 지난 사용자만 사용할 수 있습니다'
 
-    # def has_permission(self, request, view):
-    #     user = request.user
-    #     if not request.user or not request.user.is_authenticated:
-    #         return False
-        
-    #     print(f"user join date : {user.join_date}")
-    #     return bool(user.join_date < (timezone.now() - timedelta(minutes=3)))
+    def has_permission(self, request, view):
+        user = request.user
+        return bool(user.is_authenticated and 
+                    request.user.join_date < (timezone.now() - timedelta(minutes=3)))

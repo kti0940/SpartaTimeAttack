@@ -3,6 +3,7 @@ from tabnanny import verbose
 from django.db import models
 from user.models import User as UserModel
 from datetime import datetime
+from django.utils import timezone
 
 # Create your models here.
 
@@ -19,9 +20,9 @@ class Article(models.Model):
     user = models.ForeignKey(UserModel, verbose_name="작성자", on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     category = models.ManyToManyField(Category)
-    content = models.TextField()
-    startdate = models.DateTimeField("게시 시작 시간", default=datetime.now)
-    enddate = models.DateTimeField("게시 종료 시간", default=datetime.now)
+    contents = models.TextField()
+    exposure_start_date = models.DateField("게시 시작 일자", default=timezone.now)
+    exposure_end_date = models.DateField("게시 종료 일자", default=timezone.now)
     datetime = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f'({self.title}) 라는 제목으로 {self.user.username} 님이 작성하신 글입니다'
@@ -30,7 +31,8 @@ class Comment(models.Model):
     user = models.ForeignKey(UserModel, verbose_name="작성자", on_delete=models.CASCADE)
     article = models.ForeignKey(Article, verbose_name="게시글", on_delete=models.CASCADE)
     contents = models.TextField("본문")
+    
     def __str__(self):
-        return f'{self.contents}'
+        return f'{self.article.title} / {self.contents}'
     
     
