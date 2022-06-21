@@ -12,7 +12,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         fields = ["title"]
         
 class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
+    class Meta: 
         model = CommentModel
         fields = ["contents"]
         
@@ -23,11 +23,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    article_set = ArticleSerializer(many=True)
+    article = ArticleSerializer(many=True, source="article_set")
     comment_set = CommentSerializer(many=True)
     userprofile = UserProfileSerializer()
     
     class Meta:
         model = UserModel
-        fields = ["username", "email", "fullname", "join_date" ,"userprofile", "article_set", "comment_set"]
+        fields = ["username", "email", "fullname", "join_date" ,"userprofile", "article", "comment_set"]
         

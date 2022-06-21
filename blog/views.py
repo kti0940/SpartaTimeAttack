@@ -6,35 +6,44 @@ from user.models import User as UserModel
 from blog.models import Article as ArticleModel, Category
 from blog.models import Comment as CommentModel
 from user.serializers import ArticleSerializer
-from DRF.permissions import RegistedMoreThanAMinuteUser
+# from DRF.permissions import RegistedMoreThanAMinuteUser
+from datetime import datetime
+from django.utils import timezone
+from DRF.permissions import IsAdminOrIsAuthenticatedReadOnly
 
 
 
 class ArticleView(APIView):
+    permission_classes = [IsAdminOrIsAuthenticatedReadOnly]
     # 로그인 한 사용자의 게시글 목록 return
     # permission_classes = [permissions.IsAuthenticated]
-    permission_classes = [RegistedMoreThanAMinuteUser]
+    # permission_classes = [RegistedMoreThanAMinuteUser]
 
     def get(self, request):
-        user = request.user
-        print(user)
+        # user = request.user
+        # print(user)
         
-        articles = ArticleModel.objects.filter(user=user)
-        print(f'아티클스는 -> {articles}')
+        article = ArticleSerializer(ArticleModel.objects.filter(startdate__lte=timezone.now(), enddate__gte=timezone.now()), many=True).data
+        print(article)
+        
+        return Response(article)
+        
+        # articles = ArticleModel.objects.filter(user=user)
+        # print(f'아티클스는 -> {articles}')
+        # print(f'아티클스는 데이터타임은 {articles}')
         
         # titles = [article.title for article in articles] # list 축약 문법
 
-        titles = []
+        # titles = []
 
-        for article in articles:
-            titles.append(article.title)
+        # for article in articles:
+        #     titles.append(article.title)
         
-        return Response({"article_list": titles})
+        # return Response({"article_list": titles})
         
         # article_data = ArticleSerializer(ArticleModel.objects.filter(user=request.user), many=True).data
         # print(article_data)
         
-        # return Response({})
         
     def post(self, request):
     
@@ -53,14 +62,18 @@ class ArticleView(APIView):
             return Response({"message":"카테고리를 선택해 주세요"})
         
         category = Category.objects.get(name=request.data.get('category'))
-        article = ArticleModel(title=title, content=content, user=user)
+        article = ArticleModel(
+            title=title, 
+            content=content, 
+            user=user
+            )
         article.save()
         article.category.add(category)
         
         return Response({"message":"게시글이 작성 되었습니다"})
     
 class CommentView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     
     def get(self, request):
         user = request.user

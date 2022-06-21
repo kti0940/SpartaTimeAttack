@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework import permissions
+from rest_framework import permissions, status
 from rest_framework.response import Response
 from django.db.models import F
 
@@ -10,7 +10,7 @@ from user.models import UserProfile
 
 from user.serializers import UserSerializer
 
-from DRF.permissions import RegistedMoreThanAMinuteUser
+# from DRF.permissions import RegistedMoreThanAMinuteUser
 
 # Create your views here.
 
@@ -18,15 +18,15 @@ class UserView(APIView):
     # permission_classes = [permissions.AllowAny] # 모든 사용자 사용 가능
     # permission_classes = [permissions.IsAuthenticated] # 인증된 사용자만 사용 가능
     # permission_classes = [permissions.IsAdminUser] #어드민 유저만 사용 가능
-    permission_classes = [RegistedMoreThanAMinuteUser]
+    # permission_classes = [RegistedMoreThanAMinuteUser]
 
     def get(self, request):
         user = request.user
-    
-        return Response(UserSerializer(user).data)
+        # print(dir(user))
+        return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
         
         # hobbys = user.userprofile.hobby.all()
-        
+        # print(hobbys)
         # # print(hobbys)
         # for hobby in hobbys:
         #     # exclde : 매칭 된 쿼리만 제외, filter와 반대
@@ -38,7 +38,7 @@ class UserView(APIView):
         #     print(hobby_members)
         #     hobby_members = list(hobby_members)
         #     print(f"hobby : {hobby.name} / hobby members : {hobby_members}")
-        # return Response({})
+        return Response({})
         
         # print(dir(user))
         

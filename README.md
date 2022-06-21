@@ -1,3 +1,5 @@
+# 1일차 과제
+
 ## 1. args, kwargs를 사용하는 예제 코드 짜보기
 
 ```
@@ -40,7 +42,7 @@ prac(*sample_list, **sample_dict)
 
 ---
 
-2일차 과제
+# 2일차 과제
 
 ### 1. Django 프로젝트를 생성하고, user 라는 앱을 만들어서 settings.py 에 등록해보세요.
 
@@ -64,7 +66,7 @@ prac(*sample_list, **sample_dict)
 
 ---
 
-3일차 과제
+# 3일차 과제
 
 ### 1. blog 앱에 <게시글, 사용자, 내용>이 포함된 comment 테이블을 작성해주세요 (완)
 
@@ -84,7 +86,38 @@ prac(*sample_list, **sample_dict)
 
 ### - 만약 카테고리가 지정되지 않았다면 카테고리를 지정해야 한다고 리턴해주세요
 
-6. custom permission class를 활용해 가입 후 3일 이상 지난 사용자만 게시글을 쓸 수 있도록 해주세요
+### 6. custom permission class를 활용해 가입 후 3일 이상 지난 사용자만 게시글을 쓸 수 있도록 해주세요
 
-- 테스트 할 때에는 가입 후 3분 이상 지난 사용자가 게시글을 쓸 수 있게 해주세요
-- join_date는 datetime field로 만들어주세요
+### - 테스트 할 때에는 가입 후 3분 이상 지난 사용자가 게시글을 쓸 수 있게 해주세요
+
+### - join_date는 datetime field로 만들어주세요
+
+---
+
+# 4일차 과제
+
+### 1. admin 페이지에 user admin을 등록하고, userprofile 테이블을 user admin 페이지에서 같이 보고 설정 할 수 있도록 해주세요
+
+### 2. article 테이블에 <노출 시작 일자, 노출 종료 일자>를 추가해주세요
+
+3. article view에 게시글 조회 기능을 만들되, 현재 일자를 기준으로 노출 시작 일자와 노출 종료 일자 사이에 있는 항목들만 리턴해주도록 필터를 설정해주세요
+
+- 리턴 데이터는 게시글 작성일 기준으로 정렬하여 최근 쓴 글이 가장 먼저 올라오도록 해주세요
+
+4. 기존 article 생성 기능을 유지하되, article은 admin user 혹은 가입 후 7일이 지난 사용자만 생성 가능하도록 해주세요
+
+- 조회는 로그인 한 사용자에 대해서만 가능하도록 설정해주세요
+
+# 5일차 과제
+
+### 1. product라는 앱을 새로 생성해주세요
+
+2. product 앱에서 <작성자, 제목, 썸네일, 설명, 등록일자, 노출 시작 일, 노출 종료일>가 포함된 product 테이블을 생성해주세요
+
+3. django serializer에서 기본적으로 제공하는 validate / create / update 기능을 사용해 event 테이블의 생성/수정 기능을 구현해주세요
+
+   - postman으로 파일을 업로드 할 때는 raw 대신 form-data를 사용하고, Key type을 File로 설정해주세요
+
+4. 등록된 이벤트 중 현재 시간이 노출 시작 일과 노출 종료 일의 사이에 있거나, 로그인 한 사용자가 작성한 product 쿼리셋을 직렬화 해서 리턴해주는 serializer를 만들어주세요
+
+5. product field를 admin에서 관리할 수 있도록 등록해주세요
