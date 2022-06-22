@@ -11,6 +11,10 @@ from blog.models import Category as CategoryModel
 from product.models import Product as ProductModel
 
 class ProductSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='username'
+    )
     
     class Meta:
         model = ProductModel

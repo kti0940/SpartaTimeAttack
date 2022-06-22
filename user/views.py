@@ -57,20 +57,20 @@ class UserView(APIView):
     
     # 회원 가입
     def post(self, request):
-        user_serializer = UserSerializer(data=request.data)
+        # user_serializer = UserSerializer(data=request.data)
         
-        if user_serializer.is_valid():
-            user_serializer.save()
-            return Response(user_serializer.data, status=status.HTTP_200_OK)
+        # if user_serializer.is_valid():
+        #     user_serializer.save()
+        #     return Response(user_serializer.data, status=status.HTTP_200_OK)
         
-        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # serializer = UserSignupSerializer(data=request.data)
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return Response({"message":"가입 완료!!"})
-        # else:
-        #     print(serializer.errors)
-        #     return Response({"message": "가입 실패!!"})
+        # return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = UserSignupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message":"가입 완료!!"})
+        else:
+            print(serializer.errors)
+            return Response({"message": "가입 실패!!"})
         
         # return Response({"message":"post method"})
     
