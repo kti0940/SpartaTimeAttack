@@ -23,7 +23,7 @@ class Article(models.Model):
     contents = models.TextField()
     exposure_start_date = models.DateField("게시 시작 일자", default=timezone.now)
     exposure_end_date = models.DateField("게시 종료 일자", default=timezone.now)
-    datetime = models.DateTimeField(auto_now_add=True)
+    datetime = models.DateTimeField(auto_now_add=True) # 데이트타임 필드 = timezone.now() #데이트필드 = time.now()
     def __str__(self):
         return f'({self.title}) 라는 제목으로 {self.user.username} 님이 작성하신 글입니다'
     
@@ -34,5 +34,6 @@ class Comment(models.Model):
     
     def __str__(self):
         return f'{self.article.title} / {self.contents}'
+    
     
     

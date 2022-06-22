@@ -7,6 +7,7 @@ from django.db.models import F
 from django.contrib.auth import login, logout, authenticate
 
 from user.models import UserProfile
+from user.models import User as UserModel
 
 from user.serializers import UserSerializer, UserSignupSerializer
 
@@ -56,17 +57,33 @@ class UserView(APIView):
     
     # 회원 가입
     def post(self, request):
-        serializer = UserSignupSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message":"가입 완료!!"})
-        else:
-            print(serializer.errors)
-            return Response({"message": "가입 실패!!"})
+        user_serializer = UserSerializer(data=request.data)
+        
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return Response(user_serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # serializer = UserSignupSerializer(data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response({"message":"가입 완료!!"})
+        # else:
+        #     print(serializer.errors)
+        #     return Response({"message": "가입 실패!!"})
+        
+        # return Response({"message":"post method"})
     
     # 회원 정보 수정
-    def put(self, request):
-        return Response({"message": "put method!!"})
+    def put(self, request, obj_id):
+        user = UserModel.objects.get(id=obj_id)
+        user_serializer = UserSerializer(user, data=request.data, partial=True)
+        
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return Response(user_serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     # 회원 탈퇴
     def delete(self, request):
