@@ -8,7 +8,7 @@ from .models import (
     JobPost,
     Company
 )
-from .serializers import JobPostSerializer
+from .serializers import JobPostSerializer, UserSupportSerializer
 from django.db.models.query_utils import Q
 
 
@@ -41,6 +41,10 @@ class SkillView(APIView):
 
 
 class JobView(APIView):
+    def get(self, request):
+        user = request.user
+        print(user)
+        return Response(UserSupportSerializer(user).data)
 
     def post(self, request):
         job_type = int(request.data.get("job_type", None))

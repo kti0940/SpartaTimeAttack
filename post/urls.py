@@ -6,4 +6,5 @@ urlpatterns = [
     path('', SkillView.as_view()),
 
     path('job', JobView.as_view()),
+    path('apply/', JobView.as_view()),
 ]
