@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <!-- Webpage Title -->
+    <title>태인 마켓</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <!-- 이미지 클래스 -->
+    <style>
+        .wrap {}
+
+        .main {
+            padding: 0px 0px 0px 20px;
+            color: black;
+            /* display flex를 쓸 때엔 아래 네 줄이 항상 묶여 다닙니다. */
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            justify-content: center;
+        }
+
+        .order {
+            width: 500px;
+        }
+
+        .button1 {
+            margin: 0px 0px 0px 20px;
+        }
+
+        .display {
+            display: inline-block;
+        }
+
+        .fontcss {
+            font-size: 30px;
+        }
+    </style>
+
+    <script>
+        function order() {
+            let taeinname = $('#orderName').val();
+            let taeincount = $('#orderCount').val();
+            let taeinadress = $('#orderAdress').val();
+            let taeinnumber = $('#orderNumber').val();
+
+            if (taeinname == '') {
+                alert('이름을 입력하세요');
+                $('#orderName').focus();
+                return;
+            } else if (taeincount == '') {
+                alert('수량을 입력하세요');
+                $('#orderCount').focus();
+            } else if (taeinadress == '') {
+                alert('주소를 입력하세요');
+                $('#orderAdress').focus();
+                return;
+            } else if (taeinnumber == '') {
+                alert('전화번호를 입력하세요');
+                $('#orderNumber').focus();
+                return;
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="wrap">
+        <div>
+            <img src="./babo.jpeg">
+        </div>
+    </div>
+    <div class="main">
+        <span class="display"><span class="fontcss">상품명 : 어!?</span> 가격: 멍때리는 순간 얻게됨</span>
+        <!-- (가격부분 제목옆으로 어떻게 보내지?...왜 옆으로안가고 아래로 가질까?) -->
+        <p></p>
+        <p>이 상품으로 말할것 같으면 코딩을 할때마다 이해가 가지 않는 이모티콘으로 누적시 <span style="color:red">바보</span>가 될 수 있음</p>
+        <h2>주문하기</h2>
+        <div class="input-group input-group-sm mb-3 order">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">주문자 이름</span>
+            </div>
+            <input id="orderName" type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm">
+        </div>
+        <div class="input-group mb-3 order">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">수량</label>
+            </div>
+            <select class="custom-select" id="orderCount">
+                <option selected value>-- 바보가 된 순간을 카운트하세요 --</option>
+                <option value="1">한번</option>
+                <option value="2">두번</option>
+                <option value="3">그만...</option>
+            </select>
+        </div>
+        <div class="input-group input-group-sm mb-3 order">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">주소</span>
+            </div>
+            <input id="orderAdress" type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm">
+        </div>
+        <div class="input-group input-group-sm mb-3 order">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">전화번호</span>
+            </div>
+            <input id="orderNumber" type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm">
+        </div>
+    </div>
+    <button onclick="order()" type="button" class="btn btn-primary button1">억지로 주문하기</button>
+</body>
+
+</html>
